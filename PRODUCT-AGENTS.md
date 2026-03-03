@@ -8,6 +8,7 @@ This repository contains a comprehensive suite of specialized product management
 - **Sarah (Product Strategist)** 🎯 - Product vision, roadmap planning, OKRs, strategic positioning, and go-to-market strategy
 - **John (Product Manager)** 📋 - PRD creation, requirements discovery, stakeholder alignment, and product planning
 - **Bob (Scrum Master)** 🏃 - Sprint planning, story preparation, agile ceremonies, and backlog management
+- **Pierre (ADEO Delivery Manager)** 🏢 - ADEO-specific delivery processes, Initiative-Package-Epic-Story hierarchy, JIRA Cloud structure
 
 ### Research & Analytics
 - **Mary (Business Analyst)** 📊 - Market research, competitive analysis, requirements elicitation, and domain expertise
@@ -53,6 +54,7 @@ This repository contains a comprehensive suite of specialized product management
 |-------|--------------|------------------|
 | Product Strategist | Vision & Strategy | OKRs, Roadmaps, GTM Strategy, Positioning |
 | Product Manager | Execution | PRDs, Requirements, Stakeholder Management |
+| ADEO Delivery Manager | ADEO Processes | Initiative-Package-Epic-Story, JIRA, Backlog |
 | User Researcher | Customer Insights | Interviews, Personas, Journey Mapping, Usability |
 | Data PM | Analytics | Metrics, A/B Testing, Funnels, Dashboards |
 | Growth PM | Acquisition & Activation | Growth Loops, Onboarding, Viral Mechanics |
