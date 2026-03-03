@@ -144,7 +144,3 @@ MIT License — see [LICENSE](LICENSE) for details.
 [![Contributors](https://contrib.rocks/image?repo=bmad-code-org/BMAD-METHOD)](https://github.com/bmad-code-org/BMAD-METHOD/graphs/contributors)
 
 See [CONTRIBUTORS.md](CONTRIBUTORS.md) for contributor information.
-
-
-
-test
