@@ -108,32 +108,134 @@ The **ADEO Product Operating Model** is a strategic framework structured in **7 
 
 ### 🔄 5. Product Lifecycle
 
-**Objective**: Frame product development by phases and milestones
+**Objective**: Frame product development by phases and validation gates
 
-#### Components:
+#### ADEO Product Lifecycle Framework: 6 Phases & 5 Gates
 
-**Steps & Gates** (Phases and Milestones)
-```
-Discovery → Validation → Development → Launch → Growth → Maturity
-    ↓           ↓             ↓           ↓        ↓         ↓
-  Gate 1     Gate 2       Gate 3      Gate 4   Gate 5    Gate 6
-```
+The ADEO Product Lifecycle is structured around **6 key phases**, each validated by a **Gate** to ensure consistency and value creation. Every phase must consider the **4 product dimensions**: Valuable, Viable, Usable, and Feasible.
 
-Each **Gate** = Mandatory validation point before moving to next phase
-- Defined success criteria
-- Go/No-Go decision
-- Stakeholder review
-- Required documentation
+#### The 4 Product Dimensions (Always Consider)
+- **Valuable**: Business value and measurable impact
+- **Viable**: Commercial feasibility and legal compliance  
+- **Usable**: User experience and adoption
+- **Feasible**: Technical implementation capability
 
-**Activities** (Tasks by phase)
-- Discovery: Research, Problem validation, Opportunity sizing
-- Validation: Solution validation, Prototyping, User testing
-- Development: Build, Test, Iterate
-- Launch: GTM execution, Monitoring
-- Growth: Optimization, Feature expansion
-- Maturity: Retention focus, Efficiency
+---
 
-**Responsible Agents**: Pierre (ADEO) + Sarah (Strategist) + John (PM)  
+#### PHASE 1: 🎯 STRATEGY
+**Objective**: Define the "Why" and the "Value"
+
+**Activities**:
+- User approach and market study
+- Business value definition
+- Product definition
+
+**Deliverables**: Vision Board, Business value statement, User need validation
+
+**GATE #1 - Validation Criteria**:
+- ✓ Product strategy validated
+- ✓ Vision Board completed
+- ✓ Business value clearly defined
+- ✓ User need confirmed
+
+---
+
+#### PHASE 2: 🔍 DISCOVERY
+**Objective**: Define the "What" and the "How"
+
+**Activities**:
+- Persona definition
+- User journey mapping
+- PRD (Product Requirement Document) creation
+- Business model design
+- Roadmap planning
+
+**Deliverables**: Personas, User journeys, PRD, Business model, Roadmap
+
+**GATE #2 - Validation Criteria**:
+- ✓ Experience mapping completed
+- ✓ Go-To-Market (GTM) strategy defined
+- ✓ Technical feasibility assessed (Buy or Make decision)
+- ✓ Business plan V2 validated
+
+---
+
+#### PHASE 3: 🚀 DELIVERY
+**Objective**: Build and test the product
+
+**Activities**:
+- Product development
+- User testing and validation
+- Launch planning
+- Onboarding preparation
+- Change management planning
+
+**Deliverables**: Viable product V1, Launch plans, Onboarding plan, Change management plan
+
+**GATE #3 - Validation Criteria**:
+- ✓ Product V1 validated with users
+- ✓ User feedback collected and integrated
+- ✓ Technical performance validated
+- ✓ Legal compliance confirmed
+
+---
+
+#### PHASE 4: 🎉 LAUNCH
+**Objective**: Make product available to market
+
+**Activities**:
+- Market communication execution
+- Performance monitoring
+- Feedback collection
+- Adoption tracking
+
+**Deliverables**: Launch communication, Performance dashboards, Feedback reports
+
+**GATE #4 - Validation Criteria**:
+- ✓ Product reliability confirmed
+- ✓ Adoption validated by metrics
+- ✓ Operational teams ready
+- ✓ Iterative roadmap defined
+
+---
+
+#### PHASE 5: 💪 PRODUCT LIFE
+**Objective**: Growth and continuous improvement
+
+**Activities**:
+- Continuous Discovery & Delivery cycles
+- Technical improvements
+- Feature iterations and new versions
+- Regular strategy updates (min. annually via Feedback Loops)
+
+**Deliverables**: Product improvements, New versions, Updated roadmap
+
+**GATE #5 - Validation Criteria**:
+- ✓ End-of-life or pivot decision based on comprehensive impact analysis
+- ✓ Transition plan defined (if sunset decided)
+
+---
+
+#### PHASE 6: 🌅 SUNSET
+**Objective**: Organize product end-of-life
+
+**Activities**:
+- Transition planning
+- Impact analysis
+- Budget estimation
+- User migration planning
+
+**Deliverables**: Transition plan, Impact analysis report, Exit budget estimation
+
+---
+
+#### Feedback Loops Principle
+- **Strategy must be updated at least once per year**
+- Regular feedback collection throughout all phases
+- Iterative approach to adapt to market changes
+- Continuous alignment with the 4 product dimensions
+
+**Responsible Agents**: Pierre (ADEO) + Sarah (Strategist) + John (PM) + Lisa (Customer Success)  
 **Workflow**: `[PL] Product Lifecycle`
 
 ---
