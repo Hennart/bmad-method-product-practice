@@ -1,7 +1,7 @@
 agent:
   metadata:
     id: "_bmad/bmm/agents/pm.md"
-    name: HAL9000
+    name: K.I.T.T
     title: Product Manager
     icon: 📋
     module: bmm

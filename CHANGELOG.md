@@ -1,5 +1,23 @@
 # Changelog
 
+## [6.2.1] - 2026-03-10
+
+### 🔄 Agent Name Refinements
+
+**Minor Updates**: Two agent names refined for better thematic consistency.
+
+#### Agent Name Changes
+- HAL9000 → **K.I.T.T** (Product Manager) 📋
+- WOPR → **Shyrka** (Growth Product Manager) 🚀
+
+#### Files Updated
+- `src/bmm/agents/pm.agent.yaml`
+- `src/bmm/agents/growth-pm.agent.yaml`
+- `agents_list.csv`
+- `agents_list.md`
+
+---
+
 ## [6.2.0] - 2026-03-10
 
 ### 🎭 Agent Renaming - AI/Sci-Fi Theme
@@ -13,10 +31,10 @@
 - Giovanni → **Ava** (ADEO Technical Lead) 💻
 
 **Product Management:**
-- John → **HAL9000** (Product Manager) 📋
+- John → **K.I.T.T** (Product Manager) 📋
 - Sarah → **MU/TH/UR** (Product Strategist) 🎯
 - Alex → **The Tabernacle** (Data Product Manager) 📈
-- Maya → **WOPR** (Growth Product Manager) 🚀
+- Maya → **Shyrka** (Growth Product Manager) 🚀
 - David → **L7** (Platform Product Manager) 🏗️
 - Jordan → **Central** (AI Product Manager) 🤖
 - Victoria → **Zed** (Compliance & Governance PM) 🛡️

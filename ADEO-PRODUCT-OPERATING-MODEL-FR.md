@@ -133,7 +133,7 @@ Chaque **Gate** = Point de validation obligatoire avant de passer à la phase su
 - Growth: Optimization, Feature expansion
 - Maturity: Retention focus, Efficiency
 
-**Agents Responsables**: Euclid (ADEO) + MU/TH/UR (Strategist) + HAL9000 (PM)  
+**Agents Responsables**: Euclid (ADEO) + MU/TH/UR (Strategist) + K.I.T.T (PM)  
 **Workflow**: `[PL] Product Lifecycle`
 
 ---
@@ -214,7 +214,7 @@ Chaque **Gate** = Point de validation obligatoire avant de passer à la phase su
 | 💰 Assets Management | Rachel (Pricing PM) | Euclid (ADEO) |
 | 🤖 AI | Central (AI PM) | Euclid (ADEO) |
 | 📣 Product Marketing | MU/TH/UR (Strategist) | Euclid (ADEO) |
-| 🔄 Product Lifecycle | Euclid (ADEO) | MU/TH/UR + HAL9000 + Lisa |
+| 🔄 Product Lifecycle | Euclid (ADEO) | MU/TH/UR + K.I.T.T + Lisa |
 | 👥 Product Culture | Euclid (ADEO) | RH / Management |
 | 📊 Adeo Product Grade | Euclid (ADEO) | Tous les agents |
 

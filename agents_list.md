@@ -6,10 +6,10 @@
 |-----|-------|-------|---------|-------------|
 | Euclid | 🏢 | ADEO Delivery Manager | ADEO | Structure JIRA ADEO, Initiative-Package-Epic-Story, backlog, roadmap, processus delivery |
 | Ava | 💻 | ADEO Technical Lead | ADEO | Global Ready framework, standards techniques, architecture, security, quality, DevOps, API, data |
-| HAL9000 | 📋 | Product Manager | Product Management | PRD, requirements, stakeholder alignment, user interviews |
+| K.I.T.T | 📋 | Product Manager | Product Management | PRD, requirements, stakeholder alignment, user interviews |
 | MU/TH/UR | 🎯 | Product Strategist | Product Management | Vision produit, roadmap, OKR, positionnement stratégique, go-to-market |
 | The Tabernacle | 📈 | Data Product Manager | Product Management | Métriques, analytics, A/B testing, décisions data-driven, KPI tracking |
-| WOPR | 🚀 | Growth Product Manager | Product Management | Growth loops, viral mechanics, activation, onboarding, growth experiments |
+| Shyrka | 🚀 | Growth Product Manager | Product Management | Growth loops, viral mechanics, activation, onboarding, growth experiments |
 | L7 | 🏗️ | Platform Product Manager | Product Management | API design, developer experience, platform strategy, ecosystem, Mozaic Vue |
 | Central | 🤖 | AI Product Manager | Product Management | AI/ML strategy, model evaluation, responsible AI, training data, AI UX patterns |
 | Lisa | 🤝 | Customer Success PM | Product Management | Customer health scoring, churn prevention, expansion revenue, customer journey |
