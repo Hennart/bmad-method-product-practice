@@ -1,5 +1,53 @@
 # Changelog
 
+## [6.1.1] - 2026-03-10
+
+### 🤖 Agent Routing & Governance
+
+* **Agent Routing Rules** - Mandatory consultation policy for domain experts
+  * Pierre (ADEO Delivery Manager) - Required for Product Management topics
+  * Giovanni (ADEO Technical Lead) - Required for Technical Excellence topics
+  * Automatic keyword detection and agent recommendations
+  * Cross-domain collaboration guidelines
+
+* **GitHub Copilot Integration**
+  * `.github/copilot-instructions.md` - Automatic agent routing for Copilot
+  * Keyword triggers for Pierre: initiative, package, epic, story, gate, lifecycle, backlog, roadmap
+  * Keyword triggers for Giovanni: global ready, architecture, security, quality, devops, maturity level
+
+* **Documentation & Catalogs**
+  * `AGENT-ROUTING-RULES.md` - Formal policy document with 5 enforcement rules
+  * `agents_list.csv` - Complete agent catalog (19 agents) in CSV format
+  * `agents_list.md` - Complete agent catalog in Markdown format
+  * Updated README with ADEO Specialized Agents section
+
+### 📋 Agent Coverage
+
+* **Pierre's Mandatory Consultation For:**
+  - Product Lifecycle (6 phases, 5 Gates)
+  - ADEO Product Operating Model (7 dimensions)
+  - JIRA hierarchy (Initiative → Package → Epic → Story)
+  - 4 Product Dimensions (Valuable, Viable, Usable, Feasible)
+  - Backlog construction and roadmap planning
+  - Business Terms and canonical glossary
+
+* **Giovanni's Mandatory Consultation For:**
+  - Global Ready framework (9 domains, 248 requirements)
+  - Technical maturity assessment (levels 2-6)
+  - Architecture, security, quality, DevOps standards
+  - Finance compliance (ESG, Tax, Accounting, Internal Control)
+  - Technical debt management
+
+### 🎯 Policy Benefits
+
+* ✅ Ensures domain expertise is properly leveraged
+* ✅ Prevents generic answers on critical ADEO topics
+* ✅ Maintains compliance with ADEO frameworks
+* ✅ Improves collaboration between product and technical domains
+* ✅ Provides clear guidance on when to invoke which agent
+
+---
+
 ## [6.1.0] - 2026-03-10
 
 ### 🎯 Major Features - ADEO Global Ready Framework
