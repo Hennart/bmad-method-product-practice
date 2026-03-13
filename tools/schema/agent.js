@@ -211,6 +211,20 @@ function buildAgentSchema(expectedModule) {
       menu: z.array(buildMenuItemSchema()).min(1, { message: 'agent.menu must include at least one entry' }),
       prompts: z.array(buildPromptSchema()).optional(),
       discussion: z.boolean().optional(),
+      guidance: z.record(z.string()).optional(),
+      knowledge_sources: z
+        .array(
+          z
+            .object({
+              type: createNonEmptyString('agent.knowledge_sources[].type').optional(),
+              path: createNonEmptyString('agent.knowledge_sources[].path').optional(),
+              description: z.string().optional(),
+              usage: z.string().optional(),
+              update_frequency: z.string().optional(),
+            })
+            .strict(),
+        )
+        .optional(),
       conversational_knowledge: z.array(z.object({}).passthrough()).min(1).optional(),
     })
     .strict();

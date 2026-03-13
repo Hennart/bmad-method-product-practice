@@ -28,7 +28,7 @@ Generated on: 2026-03-03
   - `ADEO-VALIDATION-CHECKLIST.md`
 
 - Integrate ADEO Mozaic Vue design system references into agent personas and menus:
-  - Added `DS` triggers that point to https://adeo.github.io/mozaic-vue/ in UX, Dev, Platform, Tech Writer and other relevant agents.
+  - Added `DS` triggers that point to [https://adeo.github.io/mozaic-vue/](https://adeo.github.io/mozaic-vue/) in UX, Dev, Platform, Tech Writer and other relevant agents.
   - Updated `PRODUCT-AGENTS.md` and repository README pointers to reference the ADEO design system.
 
 - Minor content and lint fixes to allow commits (converted bare URLs to markdown links to satisfy markdownlint MD034):

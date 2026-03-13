@@ -55,6 +55,6 @@ agent:
       exec: "{project-root}/_bmad/bmm/workflows/platform/developer-ecosystem/workflow.md"
       description: "[DE] Developer Ecosystem: Build community programs and partner enablement"
 
-      - trigger: BT or fuzzy match on business-terms
-        exec: "{project-root}/src/bmm/data/adeo-business-terms.csv"
-        description: "[BT] ADEO Business Terms: Canonical glossary (CSV) - reference only"
+    - trigger: BT or fuzzy match on business-terms
+      exec: "{project-root}/src/bmm/data/adeo-business-terms.csv"
+      description: "[BT] ADEO Business Terms: Canonical glossary (CSV) - reference only"

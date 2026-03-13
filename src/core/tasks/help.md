@@ -57,7 +57,12 @@ Determine what was just completed:
 
 1. **Load catalog** — Load `{project-root}/_bmad/_config/bmad-help.csv`
 
-2. **Resolve output locations and config** — Scan each folder under `{project-root}/_bmad/` (except `_config`) for `config.yaml`. For each workflow row, resolve its `output-location` variables against that module's config so artifact paths can be searched. Also extract `communication_language` and `project_knowledge` from each scanned module's config.
+2. **Resolve output locations and config** — Scan each folder under `{project-root}/_bmad/` (except `_config`) for `config.yaml`. For each workflow row, resolve its `output-location` variables against that module's config so artifact paths can be searched. Also extract `communication_language`, `project_knowledge`, and `product_name` from each scanned module's config.
+
+2.1 **Product context check** — If a `product_name` is not set in the resolved config (or is empty):
+- Immediately run `/bmad-set-product` to prompt the user for the product name and configure `product_name` + `output_folder`.
+- Once `/bmad-set-product` completes, re-run the help logic using the updated configuration.
+- Explain that without this, agents may not be able to locate or save product-specific documents in `products/<product-name>/docs`.
 
 3. **Ground in project knowledge** — If `project_knowledge` resolves to an existing path, read available documentation files (architecture docs, project overview, tech stack references) for grounding context. Use discovered project facts when composing any project-specific output. Never fabricate project-specific details — if documentation is unavailable, state so.
 
