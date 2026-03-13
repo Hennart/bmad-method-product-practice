@@ -296,20 +296,37 @@ function extractMarkdownRefs(filePath, content) {
 function extractCsvRefs(filePath, content) {
   const refs = [];
 
+  const headerLine = content.split(/\r?\n/, 1)[0] || '';
+  const preferredDelimiter = headerLine.includes(';') && !headerLine.includes(',') ? ';' : ',';
+  const delimitersToTry = preferredDelimiter === ';' ? [';', ','] : [',', ';'];
+
   let records;
-  try {
-    records = parseCsv(content, {
-      columns: true,
-      skip_empty_lines: true,
-      relax_column_count: true,
-    });
-  } catch (error) {
+  let parseError;
+
+  for (const delimiter of delimitersToTry) {
+    try {
+      records = parseCsv(content, {
+        columns: true,
+        skip_empty_lines: true,
+        relax_column_count: true,
+        relax_quotes: true,
+        delimiter,
+        escape: '\\',
+      });
+      parseError = undefined;
+      break;
+    } catch (error) {
+      parseError = error;
+    }
+  }
+
+  if (!records) {
     // No CSV schema validator exists yet (planned as Layer 2c) — surface parse errors visibly.
     // YAML equivalent (line ~198) defers to validate-agent-schema.js; CSV has no such fallback.
     const rel = path.relative(PROJECT_ROOT, filePath);
-    console.error(`  [CSV-PARSE-ERROR] ${rel}: ${error.message}`);
+    console.error(`  [CSV-PARSE-ERROR] ${rel}: ${parseError.message}`);
     if (process.env.GITHUB_ACTIONS) {
-      console.log(`::warning file=${rel},line=1::${escapeAnnotation(`CSV parse error: ${error.message}`)}`);
+      console.log(`::warning file=${rel},line=1::${escapeAnnotation(`CSV parse error: ${parseError.message}`)}`);
     }
     return refs;
   }
