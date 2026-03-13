@@ -9,4 +9,5 @@ core,anytime,Editorial Review - Structure,ES,,_bmad/core/tasks/editorial-review-
 core,anytime,Adversarial Review (General),AR,,_bmad/core/tasks/review-adversarial-general.xml,bmad-review-adversarial-general,false,,,"Review content critically to find issues and weaknesses. Use for quality assurance or before finalizing deliverables. Code Review in other modules run this automatically, but its useful also for document reviews",,
 core,anytime,Edge Case Hunter Review,ECH,,_bmad/core/tasks/review-edge-case-hunter.xml,bmad-review-edge-case-hunter,false,,,"Walk every branching path and boundary condition in code, report only unhandled edge cases. Use alongside adversarial review for orthogonal coverage - method-driven not attitude-driven.",,
 core,anytime,Set Active Product,SP,,_bmad/core/workflows/set-product/workflow.md,bmad-set-product,false,,,"Configure which product folder (products/<product-name>/docs) agents should read/write for this session.",,
+core,anytime,Show Active Product,SPC,,_bmad/core/workflows/show-product/workflow.md,bmad-show-product,false,,,"Display the currently configured product name and output folder for agents.",,
 
