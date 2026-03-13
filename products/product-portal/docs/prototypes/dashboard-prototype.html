@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMAD Dashboard Prototype</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; }
+    header, footer { background: #f4f4f4; padding: 10px 20px; }
+    header h1 { margin: 0; font-size: 1.25rem; }
+    main { flex: 1; display: grid; grid-template-columns: 1fr 2fr; gap: 20px; padding: 20px; box-sizing: border-box; }
+    .top-section { grid-column: 1 / -1; display: flex; gap: 10px; align-items: center; }
+    .top-section input { flex: 1; padding: 8px; }
+    .top-section button { padding: 8px 16px; }
+    .response { background: #fafafa; border: 1px solid #ddd; padding: 10px; height: 80px; overflow: auto; }
+    .workflows, .requests { background: #fff; border: 1px solid #ddd; padding: 10px; height: calc(100% - 10px); overflow: auto; }
+    .workflows h2, .requests h2 { margin-top: 0; }
+    .workflow-item, .request-item { padding: 6px; border-bottom: 1px solid #eee; cursor: pointer; }
+    .workflow-item:hover, .request-item:hover { background: #f0f0f0; }
+    .request-item span.type { font-weight: bold; margin-right: 6px; }
+    .assessment-form { background: #fff; border: 1px solid #ddd; padding: 10px; margin-top: 20px; }
+    .assessment-form h3 { margin-top: 0; }
+    .assessment-form a { color: #007bff; text-decoration: none; font-weight: 600; }
+    .assessment-form a:hover { text-decoration: underline; }
+    .assessment-results { margin-top: 10px; padding: 10px; background: #f8f9fa; }
+    footer { text-align: center; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BMAD Dashboard Prototype</h1>
+  </header>
+  <main>
+    <section class="top-section">
+      <input id="cmdInput" type="text" placeholder="Describe your request..." />
+      <button id="sendBtn">Submit</button>
+      <div class="response" id="response">Responses will appear here.</div>
+    </section>
+    <section class="workflows">
+      <h2>Workflows</h2>
+      <div id="workflowList"></div>
+      
+      <div class="assessment-form">
+        <h3>📊 Assessment Framework</h3>
+        <p>Lancez une évaluation complète de votre produit avec l'Assessment Framework BMAD.</p>
+        <a href="assessment-form-v2-detailed.html" target="_blank">➜ Ouvrir le formulaire d'évaluation avec guidances</a>
+      </div>
+    </section>
+    <section class="requests">
+      <h2>Requests</h2>
+      <div id="requestList"></div>
+    </section>
+  </main>
+  <footer>Prototype &copy; BMAD Method</footer>
+  <script>
+    // workflows grouped by thematic categories (phases)
+    const workflows = [
+      { id: 'create-prd', name: 'Create PRD', theme: 'Planning' },
+      { id: 'create-vision', name: 'Create Vision', theme: 'Planning' },
+      { id: 'create-architecture', name: 'Create Architecture', theme: 'Solutioning' },
+      { id: 'create-story', name: 'Create Story', theme: 'Implementation' },
+      { id: 'code-review', name: 'Code Review', theme: 'Implementation' },
+      // ... add additional sample workflows
+    ];
+    const requests = [
+      { id: 1, title: 'Fix login bug', type: 'bugfix' },
+      { id: 2, title: 'Enable dark mode', type: 'activation' },
+      { id: 3, title: 'Help API integration', type: 'support' },
+      { id: 4, title: 'Add new feature X', type: 'feature request' }
+    ];
+    const dimensions = [
+      { id: 'strategy', name: 'Strategy & Product Alignment' },
+      { id: 'ux', name: 'User Experience & Design' },
+      { id: 'tech', name: 'Technical Architecture' },
+      { id: 'ops', name: 'Operations & Support' },
+      { id: 'quality', name: 'Product Quality' },
+      { id: 'risk', name: 'Risk Assessment' }
+    ];
+
+    function renderWorkflows() {
+      const container = document.getElementById('workflowList');
+      container.innerHTML = '';
+      // group by theme
+      const themes = {};
+      workflows.forEach(w => {
+        if (!themes[w.theme]) themes[w.theme] = [];
+        themes[w.theme].push(w);
+      });
+      for (const theme in themes) {
+        const header = document.createElement('div');
+        header.style.fontWeight = 'bold';
+        header.style.marginTop = '8px';
+        header.textContent = theme;
+        container.appendChild(header);
+        themes[theme].forEach(w => {
+          const div = document.createElement('div');
+          div.className = 'workflow-item';
+          div.textContent = w.name;
+          div.onclick = () => {
+            document.getElementById('response').textContent = `Activated workflow ${w.name}`;
+          };
+          container.appendChild(div);
+        });
+      }
+      // stop here to avoid double rendering
+      return;
+    }
+
+    function renderRequests() {
+      const container = document.getElementById('requestList');
+      container.innerHTML = '';
+      requests.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'request-item';
+        div.innerHTML = `<span class='type'>${r.type.toUpperCase()}</span>${r.title}`;
+        div.onclick = () => {
+          document.getElementById('cmdInput').value = `/bmad-help ${r.title}`;
+          document.getElementById('sendBtn').click();
+        };
+        container.appendChild(div);
+      });
+    }
+
+    document.getElementById('sendBtn').addEventListener('click', () => {
+      const text = document.getElementById('cmdInput').value;
+      if (text.trim()) {
+        // naive keyword matching to pick a workflow
+        let matched = null;
+        const lower = text.toLowerCase();
+        workflows.forEach(w => {
+          if (!matched && lower.includes(w.name.toLowerCase().split(' ')[0])) {
+            matched = w;
+          }
+        });
+        if (matched) {
+          document.getElementById('response').textContent =
+            `Interpreted as workflow '${matched.name}' - activating...`;
+        } else {
+          document.getElementById('response').textContent =
+            `No specific workflow matched. BMAD will provide generic guidance.`;
+        }
+      }
+    });
+
+    renderWorkflows();
+    renderRequests();
+  </script>
+</body>
+</html>

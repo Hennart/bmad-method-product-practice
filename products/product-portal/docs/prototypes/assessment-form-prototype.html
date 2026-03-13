@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assessment Framework Form - BMAD</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      margin: 0; 
+      padding: 0; 
+      background: #f5f5f5;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    header { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; color: #333; }
+    .assessment-container { background: #fff; padding: 30px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    
+    /* Section générale */
+    .general-info { margin-bottom: 30px; padding-bottom: 30px; border-bottom: 2px solid #eee; }
+    .general-info h2 { margin-top: 0; color: #333; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; }
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group select { 
+      width: 100%; 
+      padding: 10px; 
+      border: 1px solid #ddd; 
+      border-radius: 4px; 
+      font-size: 14px;
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    
+    .radio-group { display: flex; gap: 30px; }
+    .radio-group label { display: flex; align-items: center; font-weight: normal; margin-bottom: 0; }
+    .radio-group input[type="radio"] { margin-right: 8px; }
+    
+    /* Sections de dimensions */
+    .dimensions-section h2 { margin-top: 0; color: #333; }
+    .dimension-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .dimension-tab { 
+      padding: 10px 15px; 
+      border: 2px solid #ddd; 
+      background: #f9f9f9;
+      cursor: pointer; 
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .dimension-tab.active { 
+      border-color: #007bff; 
+      background: #007bff; 
+      color: white;
+    }
+    .dimension-tab:hover { background: #f0f0f0; }
+    .dimension-tab.active:hover { background: #0056b3; }
+    
+    .dimension-content { display: none; }
+    .dimension-content.active { display: block; }
+    .dimension-content h3 { margin-top: 0; color: #007bff; }
+    
+    .criteria-group { 
+      margin: 20px 0; 
+      padding: 15px; 
+      background: #f9f9f9; 
+      border-left: 4px solid #007bff;
+      border-radius: 4px;
+    }
+    .criteria-group h4 { margin-top: 0; color: #333; }
+    
+    .score-input { 
+      display: flex; 
+      gap: 10px; 
+      align-items: center;
+    }
+    .score-input input { 
+      width: 80px; 
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .score-label { 
+      min-width: 100px; 
+      font-size: 12px; 
+      color: #666;
+      font-weight: 600;
+    }
+    
+    /* Boutons */
+    .button-group { 
+      display: flex; 
+      gap: 10px; 
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 2px solid #eee;
+    }
+    button { 
+      padding: 12px 24px; 
+      border: none; 
+      border-radius: 4px; 
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary { 
+      background: #007bff; 
+      color: white; 
+    }
+    .btn-primary:hover { background: #0056b3; }
+    .btn-secondary { 
+      background: #6c757d; 
+      color: white; 
+    }
+    .btn-secondary:hover { background: #5a6268; }
+    
+    /* Résultats */
+    .results-section { 
+      margin-top: 30px; 
+      padding: 20px; 
+      background: #f0f8ff;
+      border-radius: 4px;
+      display: none;
+    }
+    .results-section.show { display: block; }
+    .results-section h3 { margin-top: 0; color: #007bff; }
+    
+    .result-item { 
+      display: flex; 
+      justify-content: space-between; 
+      padding: 10px; 
+      margin: 10px 0;
+      background: white;
+      border-radius: 4px;
+    }
+    .result-dimension { font-weight: 600; }
+    .result-score { 
+      text-align: right; 
+      min-width: 100px;
+    }
+    
+    .overall-score { 
+      font-size: 24px; 
+      font-weight: bold; 
+      color: #007bff;
+      margin: 20px 0;
+    }
+    .recommendation { 
+      padding: 15px; 
+      background: white;
+      border-radius: 4px;
+      margin-top: 15px;
+    }
+
+    .score-rating {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .rating-exemplary { background: #28a745; color: white; }
+    .rating-good { background: #17a2b8; color: white; }
+    .rating-acceptable { background: #ffc107; color: #333; }
+    .rating-critical { background: #dc3545; color: white; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 BMAD Assessment Framework</h1>
+      <p>Formulaire complet d'évaluation de produit</p>
+    </header>
+
+    <div class="assessment-container">
+      <form id="assessmentForm">
+        
+        <!-- Section Générale -->
+        <div class="general-info">
+          <h2>📋 Informations Générales</h2>
+          
+          <div class="form-group">
+            <label>Type d'Assessment</label>
+            <div class="radio-group">
+              <label>
+                <input type="radio" name="assessmentType" value="pre-dev" checked>
+                Pre-Development (Sprint 0)
+              </label>
+              <label>
+                <input type="radio" name="assessmentType" value="live">
+                Live Product (Quarterly Review)
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="productName">Nom du Produit/Projet *</label>
+            <input type="text" id="productName" name="productName" placeholder="Ex: Dashboard Management v2.0" required>
+          </div>
+
+          <div class="form-group">
+            <label for="productOwner">Propriétaire du Produit</label>
+            <input type="text" id="productOwner" name="productOwner" placeholder="Nom du Product Manager">
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description du Produit</label>
+            <textarea id="description" name="description" placeholder="Décrivez brièvement le produit, sa vision et ses objectifs..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="assessmentDate">Date d'Évaluation</label>
+            <input type="date" id="assessmentDate" name="assessmentDate">
+          </div>
+        </div>
+
+        <!-- Sections de Dimensions -->
+        <div class="dimensions-section">
+          <h2>🎯 Évaluation par Dimensions ADEO</h2>
+
+          <div class="dimension-tabs" id="dimensionTabs"></div>
+
+          <div id="dimensionsContent"></div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="button-group">
+          <button type="button" class="btn-secondary" onclick="resetForm()">Réinitialiser</button>
+          <button type="button" class="btn-primary" onclick="calculateResults()">Calculer les Résultats</button>
+        </div>
+
+        <!-- Résultats -->
+        <div class="results-section" id="resultsSection">
+          <h3>📊 Résultats de l'Évaluation</h3>
+          <div id="resultsList"></div>
+          <div class="overall-score">
+            Score Global: <span id="overallScore">-</span>/100
+          </div>
+          <div class="recommendation" id="recommendation"></div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Données des dimensions et critères
+    const dimensionsData = {
+      'pre-dev': [
+        {
+          id: 'strategy',
+          name: 'Strategy & Product Alignment',
+          color: '#FF6B6B',
+          criteria: [
+            { id: 'vision', name: 'Product Vision & Roadmap', weight: 1 },
+            { id: 'market', name: 'Market & Competitive Analysis', weight: 1 },
+            { id: 'metrics', name: 'Success Metrics Definition', weight: 1 }
+          ]
+        },
+        {
+          id: 'ux',
+          name: 'User Experience & Design',
+          color: '#4ECDC4',
+          criteria: [
+            { id: 'research', name: 'User Research & Validation', weight: 1 },
+            { id: 'design', name: 'Design System & Consistency', weight: 1 },
+            { id: 'a11y', name: 'Accessibility Compliance', weight: 1 }
+          ]
+        },
+        {
+          id: 'tech',
+          name: 'Technical Architecture',
+          color: '#45B7D1',
+          criteria: [
+            { id: 'stack', name: 'Technology Stack Selection', weight: 1 },
+            { id: 'security', name: 'Security Architecture', weight: 1 },
+            { id: 'scalability', name: 'Scalability Planning', weight: 1 }
+          ]
+        },
+        {
+          id: 'devops',
+          name: 'Development Readiness',
+          color: '#96CEB4',
+          criteria: [
+            { id: 'quality', name: 'Code Quality Standards', weight: 1 },
+            { id: 'testing', name: 'Testing Strategy', weight: 1 },
+            { id: 'cicd', name: 'CI/CD Pipeline', weight: 1 }
+          ]
+        },
+        {
+          id: 'compliance',
+          name: 'Compliance & Regulations',
+          color: '#FFEAA7',
+          criteria: [
+            { id: 'privacy', name: 'Data Privacy Compliance', weight: 1 },
+            { id: 'standards', name: 'Industry Standards', weight: 1 }
+          ]
+        },
+        {
+          id: 'operations',
+          name: 'Operations & Support',
+          color: '#DDA0DD',
+          criteria: [
+            { id: 'monitoring', name: 'Monitoring & Observability', weight: 1 },
+            { id: 'support', name: 'Support & Documentation', weight: 1 }
+          ]
+        },
+        {
+          id: 'excellence',
+          name: 'Product Quality & Technical Excellence',
+          color: '#F8B195',
+          criteria: [
+            { id: 'features', name: 'Core Features Completeness', weight: 1 },
+            { id: 'bmad', name: 'BMAD Integration Quality', weight: 1 },
+            { id: 'perf', name: 'Performance Benchmarks', weight: 1 },
+            { id: 'coverage', name: 'Test Coverage', weight: 1 }
+          ]
+        },
+        {
+          id: 'risk',
+          name: 'Risk Assessment',
+          color: '#C7CEEA',
+          criteria: [
+            { id: 'tech-risk', name: 'Technical Risks', weight: 1 },
+            { id: 'business-risk', name: 'Business Risks', weight: 1 },
+            { id: 'ops-risk', name: 'Operational Risks', weight: 1 }
+          ]
+        }
+      ],
+      'live': [
+        {
+          id: 'ops',
+          name: 'Product Ops - Operational Excellence',
+          color: '#96CEB4',
+          criteria: [
+            { id: 'process', name: 'Process Maturity', weight: 1 },
+            { id: 'tools', name: 'Tool Adoption', weight: 1 },
+            { id: 'knowledge', name: 'Knowledge Management', weight: 1 }
+          ]
+        },
+        {
+          id: 'assets',
+          name: 'Assets Management - Revenue Optimization',
+          color: '#FFEAA7',
+          criteria: [
+            { id: 'growth', name: 'Revenue Growth', weight: 1 },
+            { id: 'pricing', name: 'Pricing Optimization', weight: 1 },
+            { id: 'utilization', name: 'Asset Utilization', weight: 1 }
+          ]
+        },
+        {
+          id: 'ai',
+          name: 'AI Integration - Intelligence Enhancement',
+          color: '#45B7D1',
+          criteria: [
+            { id: 'ai-work', name: 'AI for Product Work', weight: 1 },
+            { id: 'ai-product', name: 'AI in Product', weight: 1 },
+            { id: 'data', name: 'Data Quality', weight: 1 }
+          ]
+        },
+        {
+          id: 'marketing',
+          name: 'Product Marketing - Market Leadership',
+          color: '#FF6B6B',
+          criteria: [
+            { id: 'brand', name: 'Brand Strength', weight: 1 },
+            { id: 'content', name: 'Content Strategy', weight: 1 },
+            { id: 'launch', name: 'Launch Execution', weight: 1 }
+          ]
+        },
+        {
+          id: 'lifecycle',
+          name: 'Product Lifecycle - Evolution Management',
+          color: '#4ECDC4',
+          criteria: [
+            { id: 'roadmap', name: 'Roadmap Execution', weight: 1 },
+            { id: 'innovation', name: 'Innovation Pipeline', weight: 1 },
+            { id: 'sunset', name: 'Sunset Planning', weight: 1 }
+          ]
+        },
+        {
+          id: 'culture',
+          name: 'Product Culture - Team Excellence',
+          color: '#DDA0DD',
+          criteria: [
+            { id: 'perf', name: 'Team Performance', weight: 1 },
+            { id: 'learning', name: 'Learning Culture', weight: 1 },
+            { id: 'collab', name: 'Collaboration Quality', weight: 1 }
+          ]
+        },
+        {
+          id: 'grade',
+          name: 'Product Grade - Excellence Achievement',
+          color: '#F8B195',
+          criteria: [
+            { id: 'quality', name: 'Quality Metrics', weight: 1 },
+            { id: 'satisfaction', name: 'User Satisfaction', weight: 1 },
+            { id: 'impact', name: 'Business Impact', weight: 1 }
+          ]
+        }
+      ]
+    };
+
+    function initializeForm() {
+      const type = document.querySelector('input[name="assessmentType"]:checked').value;
+      renderDimensions(type);
+      document.querySelectorAll('input[name="assessmentType"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+          renderDimensions(radio.value);
+          document.getElementById('resultsSection').classList.remove('show');
+        });
+      });
+
+      // Set today's date
+      document.getElementById('assessmentDate').valueAsDate = new Date();
+    }
+
+    function renderDimensions(type) {
+      const dimensions = dimensionsData[type];
+      const tabsContainer = document.getElementById('dimensionTabs');
+      const contentContainer = document.getElementById('dimensionsContent');
+      
+      tabsContainer.innerHTML = '';
+      contentContainer.innerHTML = '';
+
+      dimensions.forEach((dim, index) => {
+        // Tab
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = `dimension-tab ${index === 0 ? 'active' : ''}`;
+        tab.textContent = dim.name;
+        tab.onclick = (e) => {
+          e.preventDefault();
+          document.querySelectorAll('.dimension-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.dimension-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(`content-${dim.id}`).classList.add('active');
+        };
+        tabsContainer.appendChild(tab);
+
+        // Content
+        const content = document.createElement('div');
+        content.id = `content-${dim.id}`;
+        content.className = `dimension-content ${index === 0 ? 'active' : ''}`;
+        content.innerHTML = `<h3>${dim.name}</h3>`;
+
+        dim.criteria.forEach(criterion => {
+          const criteriaDiv = document.createElement('div');
+          criteriaDiv.className = 'criteria-group';
+          criteriaDiv.innerHTML = `
+            <h4>${criterion.name}</h4>
+            <div class="score-input">
+              <input type="number" min="0" max="100" value="75" 
+                     class="criterion-score" 
+                     data-criterion-id="${criterion.id}"
+                     data-dimension-id="${dim.id}">
+              <span class="score-label">/ 100</span>
+              <span class="score-label" id="label-${criterion.id}">Good</span>
+            </div>
+          `;
+          
+          const input = criteriaDiv.querySelector('input');
+          input.addEventListener('input', (e) => {
+            updateScoreLabel(criterion.id, e.target.value);
+          });
+
+          content.appendChild(criteriaDiv);
+        });
+
+        contentContainer.appendChild(content);
+      });
+    }
+
+    function updateScoreLabel(criterionId, score) {
+      const label = document.getElementById(`label-${criterionId}`);
+      const numScore = parseInt(score);
+      if (numScore >= 90) label.textContent = 'Exemplary';
+      else if (numScore >= 75) label.textContent = 'Good';
+      else if (numScore >= 60) label.textContent = 'Acceptable';
+      else label.textContent = 'Critical';
+    }
+
+    function calculateResults() {
+      const productName = document.getElementById('productName').value;
+      if (!productName.trim()) {
+        alert('Veuillez entrer un nom de produit/projet.');
+        return;
+      }
+
+      const type = document.querySelector('input[name="assessmentType"]:checked').value;
+      const dimensions = dimensionsData[type];
+      const results = [];
+      let totalScore = 0;
+
+      dimensions.forEach(dim => {
+        const criteriaScores = [];
+        dim.criteria.forEach(criterion => {
+          const input = document.querySelector(
+            `input[data-criterion-id="${criterion.id}"][data-dimension-id="${dim.id}"]`
+          );
+          if (input) {
+            const score = parseInt(input.value) || 0;
+            criteriaScores.push(score);
+          }
+        });
+
+        const avgScore = criteriaScores.length > 0 
+          ? Math.round(criteriaScores.reduce((a, b) => a + b, 0) / criteriaScores.length)
+          : 0;
+        
+        let rating = 'Critical';
+        if (avgScore >= 90) rating = 'Exemplary';
+        else if (avgScore >= 75) rating = 'Good';
+        else if (avgScore >= 60) rating = 'Acceptable';
+
+        results.push({
+          dimension: dim.name,
+          score: avgScore,
+          rating: rating
+        });
+
+        totalScore += avgScore;
+      });
+
+      const overallScore = Math.round(totalScore / results.length);
+      
+      // Afficher les résultats
+      const resultsList = document.getElementById('resultsList');
+      resultsList.innerHTML = '';
+      results.forEach(result => {
+        const ratingClass = result.score >= 90 ? 'rating-exemplary' : 
+                           result.score >= 75 ? 'rating-good' :
+                           result.score >= 60 ? 'rating-acceptable' : 'rating-critical';
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `
+          <span class="result-dimension">${result.dimension}</span>
+          <span class="result-score">
+            <strong>${result.score}/100</strong>
+            <span class="score-rating ${ratingClass}">${result.rating}</span>
+          </span>
+        `;
+        resultsList.appendChild(item);
+      });
+
+      document.getElementById('overallScore').textContent = overallScore;
+
+      // Recommandation
+      let recommendation = '';
+      if (overallScore >= 90) {
+        recommendation = '✅ <strong>Excellent!</strong> Prêt pour le développement/production. Tous les critères sont en excellente position.';
+      } else if (overallScore >= 75) {
+        recommendation = '✅ <strong>Bon niveau.</strong> De mineures améliorations sont recommandées avant de procéder.';
+      } else if (overallScore >= 60) {
+        recommendation = '⚠️ <strong>Acceptable mais risqué.</strong> Des améliorations ciblées sont nécessaires avant la mise en production.';
+      } else {
+        recommendation = '❌ <strong>Risques élevés!</strong> Une révision stratégique et des améliorations majeures sont recommandées.';
+      }
+
+      document.getElementById('recommendation').innerHTML = recommendation;
+      document.getElementById('resultsSection').classList.add('show');
+    }
+
+    function resetForm() {
+      document.getElementById('assessmentForm').reset();
+      document.getElementById('resultsSection').classList.remove('show');
+      document.getElementById('productName').focus();
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', initializeForm);
+  </script>
+</body>
+</html>
