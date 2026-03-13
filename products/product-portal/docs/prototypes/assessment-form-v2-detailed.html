@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assessment Framework Form - BMAD (avec Guidances)</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      margin: 0; 
+      padding: 0; 
+      background: #f5f5f5;
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+    header { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; color: #333; }
+    .assessment-container { background: #fff; padding: 30px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    
+    /* Section générale */
+    .general-info { margin-bottom: 30px; padding-bottom: 30px; border-bottom: 2px solid #eee; }
+    .general-info h2 { margin-top: 0; color: #333; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; }
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group select { 
+      width: 100%; 
+      padding: 10px; 
+      border: 1px solid #ddd; 
+      border-radius: 4px; 
+      font-size: 14px;
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    
+    .radio-group { display: flex; gap: 30px; }
+    .radio-group label { display: flex; align-items: center; font-weight: normal; margin-bottom: 0; }
+    .radio-group input[type="radio"] { margin-right: 8px; }
+    
+    /* Sections de dimensions */
+    .dimensions-section h2 { margin-top: 0; color: #333; }
+    .dimension-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .dimension-tab { 
+      padding: 10px 15px; 
+      border: 2px solid #ddd; 
+      background: #f9f9f9;
+      cursor: pointer; 
+      border-radius: 4px;
+      transition: all 0.2s;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .dimension-tab.active { 
+      border-color: #007bff; 
+      background: #007bff; 
+      color: white;
+    }
+    .dimension-tab:hover { background: #f0f0f0; }
+    .dimension-tab.active:hover { background: #0056b3; }
+    
+    .dimension-content { display: none; }
+    .dimension-content.active { display: block; }
+    .dimension-content h3 { margin-top: 0; color: #007bff; }
+    .dimension-intro { 
+      background: #f0f8ff; 
+      padding: 12px; 
+      border-radius: 4px; 
+      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #333;
+    }
+    
+    /* Critères avec guidances */
+    .criteria-group { 
+      margin: 20px 0; 
+      padding: 0;
+      background: #f9f9f9; 
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .criteria-header {
+      padding: 15px;
+      background: #f0f0f0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    .criteria-header:hover { background: #e8e8e8; }
+    
+    .criteria-header h4 { 
+      margin: 0; 
+      color: #333; 
+      flex: 1;
+      font-size: 14px;
+    }
+    
+    .criteria-header .toggle-icon {
+      font-size: 18px;
+      color: #666;
+      transition: transform 0.2s;
+    }
+    
+    .criteria-header.expanded .toggle-icon {
+      transform: rotate(180deg);
+    }
+    
+    .criteria-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s;
+    }
+    
+    .criteria-body.expanded {
+      max-height: 2000px;
+    }
+    
+    .criteria-content {
+      padding: 15px;
+      border-top: 1px solid #ddd;
+    }
+    
+    .criteria-description {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+    
+    /* Grille d'évaluation */
+    .rating-guide {
+      margin: 15px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .rating-level {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .rating-level:last-child {
+      border-bottom: none;
+    }
+    
+    .rating-score {
+      padding: 10px;
+      font-weight: 600;
+      text-align: center;
+      border-right: 1px solid #eee;
+    }
+    
+    .rating-score.exemplary { background: #d4edda; color: #155724; }
+    .rating-score.good { background: #cfe2ff; color: #084298; }
+    .rating-score.acceptable { background: #fff3cd; color: #664d03; }
+    .rating-score.critical { background: #f8d7da; color: #842029; }
+    
+    .rating-description {
+      padding: 10px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    
+    /* Checklist */
+    .checklist {
+      margin: 15px 0;
+      padding: 10px;
+      background: #f0f8ff;
+      border-radius: 4px;
+    }
+    
+    .checklist-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: #333;
+    }
+    
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    
+    .checklist-item input[type="checkbox"] {
+      margin-right: 8px;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+    
+    /* Score input */
+    .score-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    
+    .score-input-wrapper {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    
+    .score-input-wrapper input { 
+      width: 80px; 
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .score-label { 
+      font-size: 12px; 
+      color: #666;
+      font-weight: 600;
+    }
+    
+    .score-rating-display {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #f0f0f0;
+      color: #666;
+    }
+    
+    /* Boutons */
+    .button-group { 
+      display: flex; 
+      gap: 10px; 
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 2px solid #eee;
+    }
+    button { 
+      padding: 12px 24px; 
+      border: none; 
+      border-radius: 4px; 
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary { 
+      background: #007bff; 
+      color: white; 
+    }
+    .btn-primary:hover { background: #0056b3; }
+    .btn-secondary { 
+      background: #6c757d; 
+      color: white; 
+    }
+    .btn-secondary:hover { background: #5a6268; }
+    
+    /* Résultats */
+    .results-section { 
+      margin-top: 30px; 
+      padding: 20px; 
+      background: #f0f8ff;
+      border-radius: 4px;
+      display: none;
+    }
+    .results-section.show { display: block; }
+    .results-section h3 { margin-top: 0; color: #007bff; }
+    
+    .result-item { 
+      display: flex; 
+      justify-content: space-between; 
+      padding: 10px; 
+      margin: 10px 0;
+      background: white;
+      border-radius: 4px;
+    }
+    .result-dimension { font-weight: 600; }
+    .result-score { 
+      text-align: right; 
+      min-width: 100px;
+    }
+    
+    .overall-score { 
+      font-size: 24px; 
+      font-weight: bold; 
+      color: #007bff;
+      margin: 20px 0;
+    }
+    .recommendation { 
+      padding: 15px; 
+      background: white;
+      border-radius: 4px;
+      margin-top: 15px;
+    }
+
+    .score-rating {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .rating-exemplary { background: #28a745; color: white; }
+    .rating-good { background: #17a2b8; color: white; }
+    .rating-acceptable { background: #ffc107; color: #333; }
+    .rating-critical { background: #dc3545; color: white; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 BMAD Assessment Framework</h1>
+      <p>Formulaire d'évaluation avec guidances détaillées et critères clairs</p>
+    </header>
+
+    <div class="assessment-container">
+      <form id="assessmentForm">
+        
+        <!-- Section Générale -->
+        <div class="general-info">
+          <h2>📋 Informations Générales</h2>
+          
+          <div class="form-group">
+            <label>Type d'Assessment</label>
+            <div class="radio-group">
+              <label>
+                <input type="radio" name="assessmentType" value="pre-dev" checked>
+                Pre-Development (Sprint 0)
+              </label>
+              <label>
+                <input type="radio" name="assessmentType" value="live">
+                Live Product (Quarterly Review)
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="productName">Nom du Produit/Projet *</label>
+            <input type="text" id="productName" name="productName" placeholder="Ex: Dashboard Management v2.0" required>
+          </div>
+
+          <div class="form-group">
+            <label for="productOwner">Propriétaire du Produit</label>
+            <input type="text" id="productOwner" name="productOwner" placeholder="Nom du Product Manager">
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description du Produit</label>
+            <textarea id="description" name="description" placeholder="Décrivez brièvement le produit, sa vision et ses objectifs..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="assessmentDate">Date d'Évaluation</label>
+            <input type="date" id="assessmentDate" name="assessmentDate">
+          </div>
+        </div>
+
+        <!-- Sections de Dimensions -->
+        <div class="dimensions-section">
+          <h2>🎯 Évaluation par Dimensions ADEO</h2>
+
+          <div class="dimension-tabs" id="dimensionTabs"></div>
+
+          <div id="dimensionsContent"></div>
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="button-group">
+          <button type="button" class="btn-secondary" onclick="resetForm()">Réinitialiser</button>
+          <button type="button" class="btn-primary" onclick="calculateResults()">Calculer les Résultats</button>
+        </div>
+
+        <!-- Résultats -->
+        <div class="results-section" id="resultsSection">
+          <h3>📊 Résultats de l'Évaluation</h3>
+          <div id="resultsList"></div>
+          <div class="overall-score">
+            Score Global: <span id="overallScore">-</span>/100
+          </div>
+          <div class="recommendation" id="recommendation"></div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Données enrichies des dimensions, critères et guidances
+    const dimensionsData = {
+      'pre-dev': [
+        {
+          id: 'strategy',
+          name: 'Strategy & Product Alignment',
+          intro: 'Évalue si la vision produit est claire, alignée avec le marché et les métriques de succès sont définies.',
+          criteria: [
+            {
+              id: 'vision',
+              name: 'Product Vision & Roadmap',
+              description: 'Une vision claire et articulée du produit et une roadmap détaillée pour les 12 prochains mois.',
+              ratingGuide: {
+                '90-100': 'Vision écrite, approuvée par tous les stakeholders. Roadmap détaillée avec priorités claires et dépendances.',
+                '75-89': 'Vision claire et communiquée. Roadmap existante mais quelques ambiguïtés sur les priorités.',
+                '60-74': 'Vision générale comprise mais manque de détails. Roadmap sous forme de liste sans priorisation claire.',
+                '0-59': 'Vision floue ou inexistante. Pas de roadmap formalisée ou complètement désalignée.'
+              },
+              checklist: [
+                'Vision produit documentée et partagée',
+                'Roadmap 12 mois avec OKR définis',
+                'Alignement stakeholders validé',
+                'Domaines de croissance/innovation identifiés'
+              ]
+            },
+            {
+              id: 'market',
+              name: 'Market & Competitive Analysis',
+              description: 'Analyse complète du marché, de la concurrence et de la position différenciatrice du produit.',
+              ratingGuide: {
+                '90-100': 'Analyse marché approfondie, benchmark compétiteur, positionnement différencié clairement articulé.',
+                '75-89': 'Analyse marché de bonne qualité, quelques analyses concurrentes, positionnement général défini.',
+                '60-74': 'Analyse marché basique, quelques concurrents étudiés, différenciation pas entièrement claire.',
+                '0-59': 'Peu ou pas d\'analyse marché. Différenciation vs concurrence vague ou inexistante.'
+              },
+              checklist: [
+                'TAM/SAM/SOM calculé',
+                'Top 5 concurrents analysés',
+                'Matrice de positionnement créée',
+                'Tendances marché identifiées'
+              ]
+            },
+            {
+              id: 'metrics',
+              name: 'Success Metrics Definition',
+              description: 'KPIs, OKRs et success metrics définis et mesurables pour évaluer le succès du produit.',
+              ratingGuide: {
+                '90-100': 'KPIs quantifiés (baselines et targets), OKRs SMART définis, tableau de bord existant.',
+                '75-89': 'Metrics principales définies, pas toutes quantifiées, dashboard partiel.',
+                '60-74': 'Quelques metrics définies mais manque de rigueur dans la quantification.',
+                '0-59': 'Pas de metrics formalisées ou complètement sans rapport avec la vision.'
+              },
+              checklist: [
+                'Baseline metrics établie',
+                'Target metrics pour 12 mois définis',
+                'OKR Q1 écrits',
+                'Dashboard KPI en place'
+              ]
+            }
+          ]
+        },
+        {
+          id: 'ux',
+          name: 'User Experience & Design',
+          intro: 'Valide que l\'UX est basée sur de la recherche utilisateur et qu\'il y a un système de design cohérent.',
+          criteria: [
+            {
+              id: 'research',
+              name: 'User Research & Validation',
+              description: 'Recherche utilisateur approfondie et validation des hypothèses avec des utilisateurs cibles.',
+              ratingGuide: {
+                '90-100': 'Études utilisateur qualitatives et quantitatives réalisées. Personas détaillés validés. User testing avant dev.',
+                '75-89': 'Recherche utilisateur solide. Personas créés. Quelques sessions de testing.',
+                '60-74': 'Recherche utilisateur partielle. Personas basiques. Testing limité.',
+                '0-59': 'Peu ou pas de recherche utilisateur. Décisions basées sur des suppositions.'
+              },
+              checklist: [
+                'Etudes utilisateurs (quali + quanti)',
+                'Personas créés et validés',
+                'User journey mappé',
+                'User testing itératif planifié'
+              ]
+            },
+            {
+              id: 'design',
+              name: 'Design System & Consistency',
+              description: 'Système de design existant et appliqué de manière cohérente dans l\'interface.',
+              ratingGuide: {
+                '90-100': 'Design system complet, documenté et accessible. Tous les wireframes et prototypes le respectent.',
+                '75-89': 'Design system bien défini. Quelques écarts dans l\'application.',
+                '60-74': 'Design patterns définis mais système pas formellement documenté.',
+                '0-59': 'Pas de design system. Inconsistances visuelles évidentes.'
+              },
+              checklist: [
+                'Design system/guide documenté',
+                'Componentes réutilisables définis',
+                'Wireframes détaillés réalisés',
+                'Prototypes haute fidélité créés'
+              ]
+            },
+            {
+              id: 'a11y',
+              name: 'Accessibility Compliance',
+              description: 'Conformité aux standards WCAG et accessibilité pour tous les utilisateurs.',
+              ratingGuide: {
+                '90-100': 'WCAG 2.1 AA minimum. Audit accessibilité complété. Pas de blocages majeurs.',
+                '75-89': 'WCAG 2.1 A respecté. Quelques recommandations mineures.',
+                '60-74': 'Accessibilité prise en compte partiellement. Quelques problèmes connus.',
+                '0-59': 'Accessibilité non considérée ou problèmes sévères.'
+              },
+              checklist: [
+                'Audit accessibilité planifié',
+                'Alt-text et labels définis',
+                'Contraste suffisant validé',
+                'Navigation clavier testée'
+              ]
+            }
+          ]
+        },
+        {
+          id: 'tech',
+          name: 'Technical Architecture',
+          intro: 'Évalue la solidité technique de l\'architecture et la capacité à scaler.',
+          criteria: [
+            {
+              id: 'stack',
+              name: 'Technology Stack Selection',
+              description: 'Choix technologique justifié et adapté aux requirements du produit.',
+              ratingGuide: {
+                '90-100': 'Stack technologique rationnalisée, ajustée aux besoins, documentation complète.',
+                '75-89': 'Stack bien choisie avec justifications, quelques alternatives considérées.',
+                '60-74': 'Stack acceptable mais peu analysées les alternatives.',
+                '0-59': 'Stack choisie sans justification claire ou inadaptée aux besoins.'
+              },
+              checklist: [
+                'Stack défini et justifié',
+                'Évaluation alternatives réalisée',
+                'Compatibilité avec stratégie validée',
+                'Expertise équipe considérée'
+              ]
+            },
+            {
+              id: 'security',
+              name: 'Security Architecture',
+              description: 'Architecture de sécurité robuste et conformité avec les standards.',
+              ratingGuide: {
+                '90-100': 'Architecture sécurité complète, threat modeling réalisé, no critical risks.',
+                '75-89': 'Sécurité bien intégrée, quelques items à adresser.',
+                '60-74': 'Sécurité partiellement considérée, quelques lacunes concernant.',
+                '0-59': 'Sécurité insuffisante, risques critiques identificés.'
+              },
+              checklist: [
+                'Threat modeling réalisé',
+                'Encryption des données en transit et au repos',
+                'Authentication & authorization définies',
+                'Plan réponse aux incidents'
+              ]
+            },
+            {
+              id: 'scalability',
+              name: 'Scalability Planning',
+              description: 'Architecture capable de supporter 10x la charge actuelle prévue.',
+              ratingGuide: {
+                '90-100': 'Scalabilité planifiée, load testing réalisé, infrastructure ready.',
+                '75-89': 'Scalabilité considérée, quelques gaps mineurs.',
+                '60-74': 'Scalabilité partiellement adressée.',
+                '0-59': 'Pas de plan scalabilité ou architecture fragile.'
+              },
+              checklist: [
+                'Projections de charge analysées',
+                'Load testing plan défini',
+                'Database scalability validée',
+                'CDN & caching stratégie'
+              ]
+            }
+          ]
+        },
+        {
+          id: 'devops',
+          name: 'Development Readiness',
+          intro: 'Valide que le contexte de développement est prêt : qualité code, testing, CI/CD.',
+          criteria: [
+            {
+              id: 'quality',
+              name: 'Code Quality Standards',
+              description: 'Standards de qualité code définis et vérifiables (linting, formatting, etc).',
+              ratingGuide: {
+                '90-100': 'Standards stricts, outils de linting en place, code reviews systématiques.',
+                '75-89': 'Standards définis, outils partiellement en place.',
+                '60-74': 'Standards basiques, peu d\'outillage.',
+                '0-59': 'Pas de standards ou non enforced.'
+              },
+              checklist: [
+                'Règles de stylage définies',
+                'Linter/formatter configuré',
+                'Code review process établi',
+                'Documentation code standards'
+              ]
+            },
+            {
+              id: 'testing',
+              name: 'Testing Strategy',
+              description: 'Stratégie de test complète couvrant unit, integration et e2e testing.',
+              ratingGuide: {
+                '90-100': 'Stratégie complète, pyramide de test respectée, target coverage 80%+.',
+                '75-89': 'Bonne stratégie de test, coverage 60-80%.',
+                '60-74': 'Tests partiels, coverage intermédiaire.',
+                '0-59': 'Tests minimaux ou inexistants.'
+              },
+              checklist: [
+                'Test pyramide définie (unit/int/e2e)',
+                'Target coverage établi (80%+)',
+                'Test data strategy',
+                'Automatisation test planning'
+              ]
+            },
+            {
+              id: 'cicd',
+              name: 'CI/CD Pipeline',
+              description: 'Pipeline d\'intégration et déploiement continu automatisé et robuste.',
+              ratingGuide: {
+                '90-100': 'CI/CD complète, automated testing gate, métriques collectées.',
+                '75-89': 'CI/CD partiellement automatisée, quelques gaps.',
+                '60-74': 'CI/CD basic, peu automatisée.',
+                '0-59': 'Pas de CI/CD ou processus complètement manuel.'
+              },
+              checklist: [
+                'Automated build pipeline',
+                'Testing gates en place',
+                'Automated deployment (staging/prod)',
+                'Monitoring & alerting'
+              ]
+            }
+          ]
+        },
+        {
+          id: 'compliance',
+          name: 'Compliance & Regulations',
+          intro: 'Valide la conformité légale et réglementaire (GDPR, etc).',
+          criteria: [
+            {
+              id: 'privacy',
+              name: 'Data Privacy Compliance',
+              description: 'Conformité GDPR, CCPA et autres régulations de protection des données.',
+              ratingGuide: {
+                '90-100': 'Audit compliance complété, policies en place, data handling processes sécurisés.',
+                '75-89': 'Compliance plan en cours, quelques items à finaliser.',
+                '60-74': 'Conformité partiellement adressée.',
+                '0-59': 'Incomplet ou non existant.'
+              },
+              checklist: [
+                'Privacy policy documentée',
+                'Data retention policies',
+                'User consent management',
+                'Data breach response plan'
+              ]
+            },
+            {
+              id: 'standards',
+              name: 'Industry Standards',
+              description: 'Conformité avec les standards métier (ex: ISO 27001, SOC2, etc).',
+              ratingGuide: {
+                '90-100': 'Certifications industry obtenues ou en cours final.',
+                '75-89': 'Standards identifiés et roadmap en place.',
+                '60-74': 'Quelques standards suivis partiellement.',
+                '0-59': 'Peu de considération pour les standards métier.'
+              },
+              checklist: [
+                'Certifications requises identifiées',
+                'Audit standards planifié',
+                'Documentation compliance',
+                'Training utilisateurs nécessaire'
+              ]
+            }
+          ]
+        },
+        {
+          id: 'operations',
+          name: 'Operations & Support',
+          intro: 'Évalue la capacité opérationnelle et le support client.',
+          criteria: [
+            {
+              id: 'monitoring',
+              name: 'Monitoring & Observability',
+              description: 'Monitoring complet et capacité à troubleshoot rapidement en production.',
+              ratingGuide: {
+                '90-100': 'Stack monitoring complète (logs, metrics, traces), alertes setup, dashboards.',
+                '75-89': 'Monitoring de base en place, quelques gaps.',
+                '60-74': 'Monitoring partiel.',
+                '0-59': 'Monitoring minimal ou inexistant.'
+              },
+              checklist: [
+                'Application logging configuré',
+                'Metrics & monitoring en place',
+                'Alertants définis et testé',
+                'Dashboard opérational créé'
+              ]
+            },
+            {
+              id: 'support',
+              name: 'Support & Documentation',
+              description: 'Documentation utilisateur et plan de support client en place.',
+              ratingGuide: {
+                '90-100': 'Documentation complète et à jour, support plan détaillé, FAQ, tutoriels.',
+                '75-89': 'Good documentation, support plan de base.',
+                '60-74': 'Documentation partielle, support unclear.',
+                '0-59': 'Documentation minimale.'
+              },
+              checklist: [
+                'User documentation complétée',
+                'API documentation',
+                'FAQ et troubleshooting',
+                'Support tier & SLAs définis'
+              ]
+            }
+          ]
+        },
+        {
+          id: 'excellence',
+          name: 'Product Quality & Technical Excellence',
+          intro: 'Évalue la qualité globale et l\'intégration avec la méthode BMAD.',
+          criteria: [
+            {
+              id: 'features',
+              name: 'Core Features Completeness',
+              description: 'Toutes les features critiques de la MVP sont complètes et testées.',
+              ratingGuide: {
+                '90-100': 'MVP 100% complète, testée, prête pour l\'adoption utilisateur.',
+                '75-89': '90%+ des features, quelques items mineurs.',
+                '60-74': '75%+ complète, quelques gaps notables.',
+                '0-59': 'Incomplet, features critiques manquantes.'
+              },
+              checklist: [
+                'MVP scope clairement défini',
+                'All features implementées',
+                'Edge cases handlés',
+                'UX polished & tested'
+              ]
+            },
+            {
+              id: 'bmad',
+              name: 'BMAD Integration Quality',
+              description: 'Produit aligné avec les directives BMAD et les bonnes pratiques.',
+              ratingGuide: {
+                '90-100': 'Excellente alignement BMAD, tous les principes appliqués.',
+                '75-89': 'Good BMAD alignment, quelques améliorations.',
+                '60-74': 'BMAD partiellement suivi.',
+                '0-59': 'Peu d\'alignement BMAD.'
+              },
+              checklist: [
+                'Assessment framework appliqué',
+                'Documents BMAD utilisés',
+                'Agents BMAD engagés',
+                'Processus BMAD respectés'
+              ]
+            },
+            {
+              id: 'perf',
+              name: 'Performance Benchmarks',
+              description: 'Performance acceptable selon les standards (ex: Core Web Vitals).',
+              ratingGuide: {
+                '90-100': 'Performance excellente, Core Web Vitals Green, <3s load time.',
+                '75-89': 'Good performance, CWV mostly green.',
+                '60-74': 'Acceptable performance, quelques items à optimiser.',
+                '0-59': 'Performance problématique.'
+              },
+              checklist: [
+                'Load time <3s target',
+                'Core Web Vitals testé',
+                'Performance profile créé',
+                'Bottlenecks identifiés'
+              ]
+            },
+            {
+              id: 'coverage',
+              name: 'Test Coverage',
+              description: 'Couverture de tests suffisante pour la qualité demandée.',
+              ratingGuide: {
+                '90-100': '80%+ coverage, critical path 100% couvert.',
+                '75-89': '70-80% coverage, bonne couverture critique.',
+                '60-74': '60-70% coverage.',
+                '0-59': '<60% coverage.'
+              },
+              checklist: [
+                'Unit test coverage 80%+',
+                'Integration tests pour workflows clés',
+                'E2E test des critical paths',
+                'Coverage tools en place'
+              ]
+            }
+          ]
+        },
+        {
+          id: 'risk',
+          name: 'Risk Assessment',
+          intro: 'Évalue les risques techniques, business et opérationnels.',
+          criteria: [
+            {
+              id: 'tech-risk',
+              name: 'Technical Risks',
+              description: 'Risques techniques identifiés et mitigation plans en place.',
+              ratingGuide: {
+                '90-100': 'No critical tech risks. Mitigation plans pour tous les risks identifiés.',
+                '75-89': 'Minor risks only. Good mitigation plans.',
+                '60-74': 'Quelques risks moyens, plans partiels.',
+                '0-59': 'Risques téchniques critiques sans mitigation.'
+              },
+              checklist: [
+                'Risques techniques listés',
+                'Probabilité & impact évalués',
+                'Mitigation plans définis',
+                'Owner assigné par risque'
+              ]
+            },
+            {
+              id: 'business-risk',
+              name: 'Business Risks',
+              description: 'Risques business identifiés et stratégies d\'atténuation.',
+              ratingGuide: {
+                '90-100': 'Excellent risk management. No critical business risks.',
+                '75-89': 'Good risk identification, mitigation plans.',
+                '60-74': 'Risques identifiés partiellement, plans basiques.',
+                '0-59': 'Business risks non adressés.'
+              },
+              checklist: [
+                'Market risks considérés',
+                'Competitive risks évalués',
+                'Revenue/adoption risks',
+                'Partner dependency risks'
+              ]
+            },
+            {
+              id: 'ops-risk',
+              name: 'Operational Risks',
+              description: 'Risques opérationnels comme la scalabilité, capacité team, etc.',
+              ratingGuide: {
+                '90-100': 'Excellente operational readiness. All risks mitigated.',
+                '75-89': 'Good operational planning with minor gaps.',
+                '60-74': 'Operational challenges identified, some mitigation.',
+                '0-59': 'Significant operational risks.'
+              },
+              checklist: [
+                'Team capacity & skills',
+                'Infrastructure readiness',
+                'Support capacity planning',
+                'Deployment & incidents plan'
+              ]
+            }
+          ]
+        }
+      ],
+      'live': [
+        {
+          id: 'ops',
+          name: 'Product Ops - Operational Excellence',
+          intro: 'Évalue l\'excellence opérationnelle du produit en production.',
+          criteria: [
+            {
+              id: 'process',
+              name: 'Process Maturity',
+              description: 'Processus de gestion produit matures et optimisés.',
+              ratingGuide: {
+                '90-100': 'Processus bien définis, documentés, régulièrement revisités.',
+                '75-89': 'Processus établis avec quelques améliorations nécessaires.',
+                '60-74': 'Processus de base, quelques gaps.',
+                '0-59': 'Processus ad-hoc ou manquants.'
+              },
+              checklist: [
+                'Processus produit documented',
+                'Release process automatisé',
+                'Decision-making process clair',
+                'Retrospectives régulières'
+              ]
+            },
+            {
+              id: 'tools',
+              name: 'Tool Adoption',
+              description: 'Outils de gestion produit utilisés efficacement.',
+              ratingGuide: {
+                '90-100': 'Suite d\'outils complète, bien intégrée, adoption 95%+.',
+                '75-89': 'Good tool ecosystem, some gaps in adoption.',
+                '60-74': 'Tools utilisés partiellement.',
+                '0-59': 'Outils inadéquats ou peu utilisés.'
+              },
+              checklist: [
+                'Product management tools en place',
+                'Analytics platform implémentée',
+                'Communication tools utilisées',
+                'Integration des outils'
+              ]
+            },
+            {
+              id: 'knowledge',
+              name: 'Knowledge Management',
+              description: 'Gestion efficace du savoir et documentation produit.',
+              ratingGuide: {
+                '90-100': 'Knowledge base complète, à jour, searchable, bien organisée.',
+                '75-89': 'Good documentation, quelques sections à mettre à jour.',
+                '60-74': 'Documentation basique, organisation moyenne.',
+                '0-59': 'Documentation insufficient.'
+              },
+              checklist: [
+                'Product history documentée',
+                'Decision logs maintenus',
+                'Lessons learned captured',
+                'Team onboarding materials'
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    function initializeForm() {
+      const type = document.querySelector('input[name="assessmentType"]:checked').value;
+      renderDimensions(type);
+      document.querySelectorAll('input[name="assessmentType"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+          renderDimensions(radio.value);
+          document.getElementById('resultsSection').classList.remove('show');
+        });
+      });
+
+      document.getElementById('assessmentDate').valueAsDate = new Date();
+    }
+
+    function renderDimensions(type) {
+      const dimensions = dimensionsData[type];
+      const tabsContainer = document.getElementById('dimensionTabs');
+      const contentContainer = document.getElementById('dimensionsContent');
+      
+      tabsContainer.innerHTML = '';
+      contentContainer.innerHTML = '';
+
+      dimensions.forEach((dim, index) => {
+        // Tab
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = `dimension-tab ${index === 0 ? 'active' : ''}`;
+        tab.textContent = dim.name;
+        tab.onclick = (e) => {
+          e.preventDefault();
+          document.querySelectorAll('.dimension-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.dimension-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(`content-${dim.id}`).classList.add('active');
+        };
+        tabsContainer.appendChild(tab);
+
+        // Content
+        const content = document.createElement('div');
+        content.id = `content-${dim.id}`;
+        content.className = `dimension-content ${index === 0 ? 'active' : ''}`;
+        content.innerHTML = `
+          <h3>${dim.name}</h3>
+          <div class="dimension-intro">${dim.intro}</div>
+        `;
+
+        dim.criteria.forEach(criterion => {
+          const criteriaDiv = document.createElement('div');
+          criteriaDiv.className = 'criteria-group';
+          
+          const header = document.createElement('div');
+          header.className = 'criteria-header';
+          header.innerHTML = `
+            <h4>${criterion.name}</h4>
+            <span class="toggle-icon">▼</span>
+          `;
+          header.onclick = () => toggleCriteria(header, body);
+          
+          const body = document.createElement('div');
+          body.className = 'criteria-body';
+          
+          const bodyContent = document.createElement('div');
+          bodyContent.className = 'criteria-content';
+          
+          bodyContent.innerHTML = `
+            <div class="criteria-description">${criterion.description}</div>
+            
+            <div class="rating-guide">
+              ${Object.entries(criterion.ratingGuide).map(([scoreRange, description]) => {
+                let ratingClass = '';
+                if (scoreRange.includes('90')) ratingClass = 'exemplary';
+                else if (scoreRange.includes('75')) ratingClass = 'good';
+                else if (scoreRange.includes('60')) ratingClass = 'acceptable';
+                else ratingClass = 'critical';
+                
+                return `
+                  <div class="rating-level">
+                    <div class="rating-score ${ratingClass}">${scoreRange}</div>
+                    <div class="rating-description">${description}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+            
+            <div class="checklist">
+              <div class="checklist-title">✓ Checklist de validation:</div>
+              ${criterion.checklist.map(item => `
+                <div class="checklist-item">
+                  <input type="checkbox" class="checklist-input" data-criterion-id="${criterion.id}" data-dimension-id="${dim.id}">
+                  <span>${item}</span>
+                </div>
+              `).join('')}
+            </div>
+            
+            <!-- score display auto-calculated -->
+            <div class="score-section">
+              <span class="score-label">Score estimé:</span>
+              <span class="score-rating-display" id="label-${criterion.id}">0%</span>
+            </div>
+          `;
+          
+          body.appendChild(bodyContent);
+          criteriaDiv.appendChild(header);
+          criteriaDiv.appendChild(body);
+          
+          // attach listeners on each checklist checkbox to recalc score
+          const checklistBoxes = bodyContent.querySelectorAll('input.checklist-input');
+          checklistBoxes.forEach(cb => {
+            cb.addEventListener('change', () => updateScoreLabel(criterion.id));
+          });
+          // compute initial score (usually 0%)
+          updateScoreLabel(criterion.id);
+          
+          content.appendChild(criteriaDiv);
+        });
+
+        contentContainer.appendChild(content);
+      });
+    }
+
+    function toggleCriteria(header, body) {
+      header.classList.toggle('expanded');
+      body.classList.toggle('expanded');
+    }
+
+    // calculate score from checklist completion percentage
+    function updateScoreLabel(criterionId) {
+      const checkboxes = document.querySelectorAll(
+        `input.checklist-input[data-criterion-id="${criterionId}"]`
+      );
+      let total = checkboxes.length;
+      if (total === 0) return;
+      let checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+      let percent = Math.round((checked / total) * 100);
+      const label = document.getElementById(`label-${criterionId}`);
+      label.textContent = `${percent}%`;
+    }
+
+    function calculateResults() {
+      const productName = document.getElementById('productName').value;
+      if (!productName.trim()) {
+        alert('Veuillez entrer un nom de produit/projet.');
+        return;
+      }
+
+      const type = document.querySelector('input[name="assessmentType"]:checked').value;
+      const dimensions = dimensionsData[type];
+      const results = [];
+      let totalScore = 0;
+
+      dimensions.forEach(dim => {
+        const criteriaScores = [];
+        dim.criteria.forEach(criterion => {
+          // calculate score from checklist
+          const checkboxes = document.querySelectorAll(
+            `input.checklist-input[data-criterion-id="${criterion.id}"]`
+          );
+          let total = checkboxes.length;
+          let checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+          let score = total > 0 ? Math.round((checked / total) * 100) : 0;
+          criteriaScores.push(score);
+        });
+
+        const avgScore = criteriaScores.length > 0 
+          ? Math.round(criteriaScores.reduce((a, b) => a + b, 0) / criteriaScores.length)
+          : 0;
+        
+        let rating = 'Critical';
+        if (avgScore >= 90) rating = 'Exemplary';
+        else if (avgScore >= 75) rating = 'Good';
+        else if (avgScore >= 60) rating = 'Acceptable';
+
+        results.push({
+          dimension: dim.name,
+          score: avgScore,
+          rating: rating
+        });
+
+        totalScore += avgScore;
+      });
+
+      const overallScore = Math.round(totalScore / results.length);
+      
+      const resultsList = document.getElementById('resultsList');
+      resultsList.innerHTML = '';
+      results.forEach(result => {
+        const ratingClass = result.score >= 90 ? 'rating-exemplary' : 
+                           result.score >= 75 ? 'rating-good' :
+                           result.score >= 60 ? 'rating-acceptable' : 'rating-critical';
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `
+          <span class="result-dimension">${result.dimension}</span>
+          <span class="result-score">
+            <strong>${result.score}/100</strong>
+            <span class="score-rating ${ratingClass}">${result.rating}</span>
+          </span>
+        `;
+        resultsList.appendChild(item);
+      });
+
+      document.getElementById('overallScore').textContent = overallScore;
+
+      let recommendation = '';
+      if (overallScore >= 90) {
+        recommendation = '✅ <strong>Excellent!</strong> Le produit est en excellente position. Prêt pour la production/optimizations avancées. Continuer à maintenir les standards actuels.';
+      } else if (overallScore >= 75) {
+        recommendation = '✅ <strong>Bon niveau.</strong> Le produit est solide. Quelques mineures améliorations sont recommandées pour atteindre l\'excellence.';
+      } else if (overallScore >= 60) {
+        recommendation = '⚠️ <strong>Acceptable mais risqué.</strong> Des améliorations ciblées sont nécessaires dans les domaines critiques avant de poursuivre.';
+      } else {
+        recommendation = '❌ <strong>Risques élevés!</strong> Une révision stratégique et des améliorations majeures sont obligatoires.';
+      }
+
+      document.getElementById('recommendation').innerHTML = recommendation;
+      document.getElementById('resultsSection').classList.add('show');
+    }
+
+    function resetForm() {
+      document.getElementById('assessmentForm').reset();
+      document.getElementById('resultsSection').classList.remove('show');
+      document.getElementById('productName').focus();
+    }
+
+    window.addEventListener('DOMContentLoaded', initializeForm);
+  </script>
+</body>
+</html>
