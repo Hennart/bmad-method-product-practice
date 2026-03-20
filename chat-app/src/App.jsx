@@ -1,6 +1,6 @@
 /**
  * Composant principal de l'application de chat BMAD Method
- * Gère l'état global : liste des messages, chargement, erreurs, token GitHub
+ * Gère l'état global : liste des messages, chargement, erreurs
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
@@ -10,7 +10,8 @@ import ChatInput from './components/ChatInput.jsx';
 import TokenModal from './components/TokenModal.jsx';
 import { sendMessage } from './services/githubModelsService.js';
 
-const STORAGE_KEY = 'bmad_github_token';
+// Clé de stockage du token dans localStorage
+const TOKEN_STORAGE_KEY = 'bmad_github_token';
 
 function App() {
   // Liste des messages de la conversation
@@ -25,15 +26,16 @@ function App() {
   // Référence vers le bas de la fenêtre de chat pour l'auto-scroll
   const bottomRef = useRef(null);
 
-  // Token GitHub stocké dans le localStorage
-  const [githubToken, setGithubToken] = useState(() => {
-    return localStorage.getItem(STORAGE_KEY) || '';
-  });
+  // Token GitHub stocké dans localStorage
+  const [githubToken, setGithubToken] = useState(
+    () => localStorage.getItem(TOKEN_STORAGE_KEY) || ''
+  );
 
-  // Afficher le modal de saisie du token
-  const [showTokenModal, setShowTokenModal] = useState(() => {
-    return !localStorage.getItem(STORAGE_KEY);
-  });
+  // Affichage de la modale de configuration du token
+  const [isTokenModalOpen, setIsTokenModalOpen] = useState(false);
+
+  // Vérification de la présence du token au démarrage
+  const isTokenMissing = !githubToken || !githubToken.trim();
 
   /**
    * Auto-scroll vers le bas à chaque nouveau message ou mise à jour
@@ -59,13 +61,14 @@ function App() {
   }, []);
 
   /**
-   * Enregistre le token GitHub dans le localStorage
-   * @param {string} token - Token GitHub à sauvegarder
+   * Sauvegarde le token et ferme la modale
+   * @param {string} token - Token GitHub saisi par l'utilisateur
    */
   const handleSaveToken = useCallback((token) => {
-    localStorage.setItem(STORAGE_KEY, token);
+    localStorage.setItem(TOKEN_STORAGE_KEY, token);
     setGithubToken(token);
-    setShowTokenModal(false);
+    setIsTokenModalOpen(false);
+    setError(null);
   }, []);
 
   /**
@@ -133,7 +136,6 @@ function App() {
         // onDone : appelé quand la réponse est complète
         () => {
           setIsLoading(false);
-          // S'assurer que le message assistant est présent même si vide
           setMessages((prev) => {
             const exists = prev.some((m) => m.id === assistantMessageId);
             if (!exists) {
@@ -154,18 +156,31 @@ function App() {
 
   return (
     <div className="app">
-      {/* Modal de saisie du token */}
-      <TokenModal
-        isOpen={showTokenModal}
-        currentToken={githubToken}
-        onSave={handleSaveToken}
+      {/* En-tête */}
+      <ChatHeader
+        onClear={handleClear}
+        onOpenTokenModal={() => setIsTokenModalOpen(true)}
+        isTokenMissing={isTokenMissing}
       />
 
-      {/* En-tête */}
-      <ChatHeader onClear={handleClear} onConfigureToken={() => setShowTokenModal(true)} />
+      {/* Bannière d'erreur token manquant */}
+      {isTokenMissing && (
+        <div className="app__error-banner" role="alert">
+          <strong>⚠️ Token GitHub non configuré</strong>
+          <p>
+            Pour utiliser cette application, vous devez configurer votre token GitHub.
+          </p>
+          <button
+            className="app__error-action-btn"
+            onClick={() => setIsTokenModalOpen(true)}
+          >
+            🔑 Configurer le token
+          </button>
+        </div>
+      )}
 
       {/* Bannière d'erreur API */}
-      {error && (
+      {error && !isTokenMissing && (
         <div className="app__error-banner app__error-banner--api" role="alert">
           <strong>❌ Erreur</strong>
           <p>{error}</p>
@@ -179,7 +194,16 @@ function App() {
       <ChatWindow messages={messages} isLoading={isLoading} bottomRef={bottomRef} />
 
       {/* Zone de saisie */}
-      <ChatInput onSend={handleSend} isLoading={isLoading} disabled={!githubToken} />
+      <ChatInput onSend={handleSend} isLoading={isLoading} />
+
+      {/* Modale de configuration du token */}
+      {isTokenModalOpen && (
+        <TokenModal
+          currentToken={githubToken}
+          onSave={handleSaveToken}
+          onClose={() => setIsTokenModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
