@@ -7,7 +7,7 @@ import { routeToAgent } from './agentRouter.js';
 
 const API_ENDPOINT = 'https://models.inference.ai.azure.com/chat/completions';
 const MODEL_NAME = import.meta.env.VITE_MODEL_NAME || 'openai/gpt-4o';
-
+console.log('🔧 MODEL_NAME utilisé:', MODEL_NAME); //
 /**
  * Sends a message to the GitHub Models API and streams the response.
  *
