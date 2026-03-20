@@ -1,28 +1,22 @@
 /**
  * GitHub Models API service for the BMAD Method chat.
- * Connects to https://models.inference.ai.azure.com and streams responses token by token.
+ * Calls the /api/chat serverless proxy which forwards to the GitHub Models API.
  */
 
 import { routeToAgent } from './agentRouter.js';
 
-const API_ENDPOINT = 'https://models.inference.ai.azure.com/chat/completions';
+const API_ENDPOINT = '/api/chat';
 const MODEL_NAME = import.meta.env.VITE_MODEL_NAME || 'openai/gpt-4o';
-console.log('🔧 MODEL_NAME utilisé:', MODEL_NAME); //
+
 /**
- * Sends a message to the GitHub Models API and streams the response.
+ * Sends a message through the /api/chat proxy and streams the response.
  *
  * @param {Array<{role: string, content: string}>} messages - Conversation history
- * @param {string} token - GitHub personal access token
  * @param {(chunk: string) => void} onChunk - Called with each text chunk as it arrives
  * @param {() => void} onDone - Called when the stream is complete
  * @param {(error: string) => void} onError - Called with an error message on failure
  */
-export async function sendMessage(messages, token, onChunk, onDone, onError) {
-  if (!token || !token.trim()) {
-    onError('Token GitHub manquant. Veuillez configurer votre token GitHub dans les paramètres.');
-    return;
-  }
-
+export async function sendMessage(messages, onChunk, onDone, onError) {
   // Determine which agent/system prompt to use based on the latest user message
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
   const { systemPrompt } = routeToAgent(lastUserMessage?.content || '');
@@ -34,7 +28,6 @@ export async function sendMessage(messages, token, onChunk, onDone, onError) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         model: MODEL_NAME,
@@ -47,15 +40,9 @@ export async function sendMessage(messages, token, onChunk, onDone, onError) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      let errorMessage = `Erreur API GitHub Models (${response.status})`;
+      let errorMessage = `Erreur API (${response.status})`;
 
-      if (response.status === 401) {
-        errorMessage =
-          'Token GitHub invalide ou expiré. Vérifiez votre token dans les paramètres.';
-      } else if (response.status === 403) {
-        errorMessage =
-          "Accès refusé. Assurez-vous que votre token a les permissions GitHub Models.";
-      } else if (response.status === 429) {
+      if (response.status === 429) {
         errorMessage = 'Limite de requêtes atteinte. Veuillez patienter avant de réessayer.';
       } else if (errorText) {
         try {
