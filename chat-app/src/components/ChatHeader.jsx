@@ -1,13 +1,16 @@
 /**
  * En-tête de l'application de chat
- * Affiche le titre, le sous-titre et le bouton pour effacer la conversation
+ * Affiche le titre, le sous-titre, le bouton pour effacer la conversation
+ * et le bouton pour configurer le token GitHub
  */
 
 /**
  * @param {Object} props
  * @param {Function} props.onClear - Callback pour effacer la conversation
+ * @param {Function} props.onOpenTokenModal - Callback pour ouvrir la modale de token
+ * @param {boolean} props.isTokenMissing - Indique si le token est manquant
  */
-function ChatHeader({ onClear }) {
+function ChatHeader({ onClear, onOpenTokenModal, isTokenMissing }) {
   return (
     <header className="chat-header">
       <div className="chat-header__info">
@@ -22,15 +25,27 @@ function ChatHeader({ onClear }) {
         <p className="chat-header__subtitle">Powered by GitHub Models</p>
       </div>
 
-      {/* Bouton pour effacer la conversation */}
-      <button
-        className="chat-header__clear-btn"
-        onClick={onClear}
-        title="Effacer la conversation"
-        aria-label="Effacer la conversation"
-      >
-        🗑️ Effacer
-      </button>
+      <div className="chat-header__actions">
+        {/* Bouton de configuration du token */}
+        <button
+          className={`chat-header__token-btn${isTokenMissing ? ' chat-header__token-btn--missing' : ''}`}
+          onClick={onOpenTokenModal}
+          title={isTokenMissing ? 'Token GitHub non configuré — cliquez pour configurer' : 'Configurer le token GitHub'}
+          aria-label="Configurer le token GitHub"
+        >
+          🔑 Token{isTokenMissing ? ' ⚠️' : ''}
+        </button>
+
+        {/* Bouton pour effacer la conversation */}
+        <button
+          className="chat-header__clear-btn"
+          onClick={onClear}
+          title="Effacer la conversation"
+          aria-label="Effacer la conversation"
+        >
+          🗑️ Effacer
+        </button>
+      </div>
     </header>
   );
 }
