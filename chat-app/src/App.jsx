@@ -1,13 +1,16 @@
 /**
  * Composant principal de l'application de chat BMAD Method
- * Gère l'état global : liste des messages, chargement, erreurs
+ * Gère l'état global : liste des messages, chargement, erreurs, token GitHub
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import ChatHeader from './components/ChatHeader.jsx';
 import ChatWindow from './components/ChatWindow.jsx';
 import ChatInput from './components/ChatInput.jsx';
+import TokenModal from './components/TokenModal.jsx';
 import { sendMessage } from './services/githubModelsService.js';
+
+const STORAGE_KEY = 'bmad_github_token';
 
 function App() {
   // Liste des messages de la conversation
@@ -22,10 +25,15 @@ function App() {
   // Référence vers le bas de la fenêtre de chat pour l'auto-scroll
   const bottomRef = useRef(null);
 
-  // Vérification de la présence du token GitHub au démarrage
-  const isTokenMissing =
-    !import.meta.env.VITE_GITHUB_TOKEN ||
-    import.meta.env.VITE_GITHUB_TOKEN === 'your_github_token_here';
+  // Token GitHub stocké dans le localStorage
+  const [githubToken, setGithubToken] = useState(() => {
+    return localStorage.getItem(STORAGE_KEY) || '';
+  });
+
+  // Afficher le modal de saisie du token
+  const [showTokenModal, setShowTokenModal] = useState(() => {
+    return !localStorage.getItem(STORAGE_KEY);
+  });
 
   /**
    * Auto-scroll vers le bas à chaque nouveau message ou mise à jour
@@ -48,6 +56,16 @@ function App() {
   const handleClear = useCallback(() => {
     setMessages([]);
     setError(null);
+  }, []);
+
+  /**
+   * Enregistre le token GitHub dans le localStorage
+   * @param {string} token - Token GitHub à sauvegarder
+   */
+  const handleSaveToken = useCallback((token) => {
+    localStorage.setItem(STORAGE_KEY, token);
+    setGithubToken(token);
+    setShowTokenModal(false);
   }, []);
 
   /**
@@ -90,6 +108,7 @@ function App() {
       // Envoi du message à l'API GitHub Models avec streaming
       await sendMessage(
         apiMessages,
+        githubToken,
         // onChunk : appelé à chaque token reçu
         (chunk) => {
           setIsLoading(false);
@@ -130,39 +149,23 @@ function App() {
         }
       );
     },
-    [messages, isLoading]
+    [messages, isLoading, githubToken]
   );
 
   return (
     <div className="app">
-      {/* En-tête */}
-      <ChatHeader onClear={handleClear} />
+      {/* Modal de saisie du token */}
+      <TokenModal
+        isOpen={showTokenModal}
+        currentToken={githubToken}
+        onSave={handleSaveToken}
+      />
 
-      {/* Bannière d'erreur token manquant */}
-      {isTokenMissing && (
-        <div className="app__error-banner" role="alert">
-          <strong>⚠️ Token GitHub non configuré</strong>
-          <p>
-            Pour utiliser cette application, vous devez configurer votre token GitHub dans un
-            fichier <code>.env</code> :
-          </p>
-          <ol>
-            <li>
-              Copiez le fichier <code>.env.example</code> en <code>.env</code>
-            </li>
-            <li>
-              Ajoutez votre token GitHub : <code>VITE_GITHUB_TOKEN=ghp_votre_token</code>
-            </li>
-            <li>Redémarrez le serveur de développement avec `npm run dev`</li>
-          </ol>
-          <p>
-            Consultez le <code>README.md</code> pour obtenir un token GitHub.
-          </p>
-        </div>
-      )}
+      {/* En-tête */}
+      <ChatHeader onClear={handleClear} onConfigureToken={() => setShowTokenModal(true)} />
 
       {/* Bannière d'erreur API */}
-      {error && !isTokenMissing && (
+      {error && (
         <div className="app__error-banner app__error-banner--api" role="alert">
           <strong>❌ Erreur</strong>
           <p>{error}</p>
@@ -176,7 +179,7 @@ function App() {
       <ChatWindow messages={messages} isLoading={isLoading} bottomRef={bottomRef} />
 
       {/* Zone de saisie */}
-      <ChatInput onSend={handleSend} isLoading={isLoading} />
+      <ChatInput onSend={handleSend} isLoading={isLoading} disabled={!githubToken} />
     </div>
   );
 }
