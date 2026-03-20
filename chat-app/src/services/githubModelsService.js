@@ -5,13 +5,10 @@
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-// Valeur par défaut du token dans le fichier .env.example (token non configuré)
-const DEFAULT_TOKEN_PLACEHOLDER = 'your_github_token_here';
 // URL de l'endpoint GitHub Models (compatible OpenAI)
 const GITHUB_MODELS_ENDPOINT = 'https://models.inference.ai.azure.com/chat/completions';
 
-// Récupération des variables d'environnement Vite
-const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+// Nom du modèle (variable d'environnement Vite ou valeur par défaut)
 const MODEL_NAME = import.meta.env.VITE_MODEL_NAME || 'gpt-4o-mini';
 
 /**
@@ -41,15 +38,16 @@ Utilise des exemples concrets liés au contexte ADEO/BMAD quand c'est pertinent.
 /**
  * Envoie un message et streame la réponse token par token
  * @param {Array<{role: string, content: string}>} messages - Historique de la conversation
+ * @param {string} token - Token GitHub fourni par l'utilisateur
  * @param {Function} onChunk - Appelé à chaque token reçu avec le texte partiel
  * @param {Function} onDone - Appelé quand la réponse est complète
  * @param {Function} onError - Appelé en cas d'erreur avec le message d'erreur
  */
-export async function sendMessage(messages, onChunk, onDone, onError) {
+export async function sendMessage(messages, token, onChunk, onDone, onError) {
   // Vérification de la présence du token GitHub
-  if (!GITHUB_TOKEN || GITHUB_TOKEN === DEFAULT_TOKEN_PLACEHOLDER) {
+  if (!token || !token.trim()) {
     onError(
-      'Token GitHub non configuré. Veuillez créer un fichier .env avec votre VITE_GITHUB_TOKEN.'
+      'Token GitHub non configuré. Veuillez cliquer sur "🔑 Token" pour le configurer.'
     );
     return;
   }
@@ -66,7 +64,7 @@ export async function sendMessage(messages, onChunk, onDone, onError) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${GITHUB_TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         model: MODEL_NAME,
@@ -116,7 +114,7 @@ export async function sendMessage(messages, onChunk, onDone, onError) {
           let errorMessage = `Erreur API (${response.status})`;
 
           if (response.status === 401) {
-            errorMessage = 'Token GitHub invalide ou expiré. Vérifiez votre VITE_GITHUB_TOKEN.';
+            errorMessage = 'Token GitHub invalide ou expiré. Cliquez sur "🔑 Token" pour le reconfigurer.';
           } else if (response.status === 429) {
             errorMessage = 'Limite de requêtes atteinte. Veuillez patienter avant de réessayer.';
           } else if (response.status === 404) {
