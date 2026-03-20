@@ -1,0 +1,15 @@
+# Dépendances
+node_modules/
+
+# Build de production
+dist/
+
+# Variables d'environnement (contient le token GitHub — ne pas committer !)
+.env
+
+# Logs
+*.log
+
+# Fichiers système
+.DS_Store
+Thumbs.db

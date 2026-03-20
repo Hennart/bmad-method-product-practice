@@ -19,6 +19,7 @@ build/*.txt
 
 # Environment variables
 .env
+chat-app/.env
 
 # System files
 .DS_Store
