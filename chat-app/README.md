@@ -21,6 +21,24 @@ npm install
 
 ---
 
+## Déploiement sur GitHub Pages
+
+L'application est automatiquement déployée sur **[https://hennart.github.io/bmad-method-product-practice/](https://hennart.github.io/bmad-method-product-practice/)** à chaque push sur `main` affectant le dossier `chat-app/`.
+
+### Pré-requis pour le déploiement
+
+1. **Activer GitHub Pages** dans les Settings du repository :
+   - Allez dans **Settings** → **Pages**
+   - Source : **GitHub Actions**
+
+2. **Ajouter les secrets** dans **Settings** → **Secrets and variables** → **Actions** :
+   - `VITE_GITHUB_TOKEN` : votre token GitHub avec accès aux GitHub Models
+   - `VITE_MODEL_NAME` : le nom du modèle à utiliser (ex: `gpt-4o-mini`)
+
+> **Note** : Si les secrets ne sont pas définis, l'application s'affichera quand même avec une bannière d'erreur de configuration.
+
+---
+
 ## Configuration
 
 1. Copiez le fichier `.env.example` en `.env` :
