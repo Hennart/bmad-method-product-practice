@@ -199,6 +199,7 @@ function App() {
       {/* Modale de configuration du token */}
       {isTokenModalOpen && (
         <TokenModal
+          isOpen={isTokenModalOpen}
           currentToken={githubToken}
           onSave={handleSaveToken}
           onClose={() => setIsTokenModalOpen(false)}
